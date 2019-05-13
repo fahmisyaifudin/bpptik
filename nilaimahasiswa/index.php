@@ -3,17 +3,19 @@
 <head>
 	<title>Nilai Mahasiswa</title>
 	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 	<div class="container">
-	
-	<div class="offset-md-4">
+	<div class="row-padding">
+	<div class="card">
+	<div class="card-body">
 	<h5>Perhitungan Nilai Akhir Mahasiswa</h5>
 	<form method="POST">
-	UTS : <br><input type="number" min="0" max="100" name="uts" style="width: 316px;"><br>
-	UAS : <br><input type="number" min="0" max="100" name="uas" style="width: 316px;"><br>
-	Tugas : <br><input type="number" min="0" max="100" name="tugas" style="width: 316px;"><br>
-	Kehadiran : <br><input type="number" min="0" max="100" name="kehadiran" style="width: 316px;"><br>
+	UTS : <br><input type="number" min="0" max="100" name="uts" style="width: 316px;" required><br>
+	UAS : <br><input type="number" min="0" max="100" name="uas" style="width: 316px;" required><br>
+	Tugas : <br><input type="number" min="0" max="100" name="tugas" style="width: 316px;" required><br>
+	Kehadiran : <br><input type="number" min="0" max="100" name="kehadiran" style="width: 316px;" required><br>
 	<button type="submit">Submit</button>
 	</form>
 	<?php
@@ -46,6 +48,8 @@
 		echo "Mutu : $mutu<br>";
 
 	?>
+	</div>
+	</div>
 	</div>
 	</div>
 </body>
