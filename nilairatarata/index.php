@@ -43,6 +43,7 @@ $nilai = isset($_POST['nilai']) ? $_POST['nilai'] : false;
 <button class="btn btn-primary" type="submit">Rekap Nilai</button>
 </form>
 <?php
+error_reporting(E_ERROR | E_PARSE);
 $temp = 0;
 for ($i=0; $i < count((array)$nilai); $i++) { 
    $temp = $temp + $nilai[$i];
@@ -56,7 +57,45 @@ for ($i=0; $i < count((array)$nilai); $i++) {
 }
 echo "<br>Rata rata : $ratarata <br>";
 echo "Nilai tertinggi $value";
-echo " Oleh $nama[$maxs]";
+echo " Oleh $nama[$maxs] <br>";
+echo "Median = " .  
+      findMedian($nilai, count($nilai));
+echo "Modus = " .  
+      mode($nilai, count($nilai));    
+
+function findMedian($a, $n) 
+{ 
+    // First we sort the array 
+    sort($a); 
+  
+    // check for even case 
+    if ($n % 2 != 0) {
+    return (double)$a[$n / 2]; 
+    }else{  
+    return (double)($a[($n - 1) / 2] + 
+                    $a[$n / 2]) / 2.0; 
+    }
+}
+function mode($x, $y) {
+   $maxValue = 0;
+   $maxCount = 0;
+
+   for ($i = 0; $i < $y; $i++) {
+      $count = 0;
+      
+      for ($j = 0; $j < $y; $j++) {
+         if ($x[$j] == $x[$i])
+              $count=$count+1;
+      }
+      
+      if ($count > $maxCount) {
+         $maxCount = $count;
+         $maxValue = $x[$i];
+      }
+   }
+
+   return $maxValue;
+}
 
 ?>
 </div>
