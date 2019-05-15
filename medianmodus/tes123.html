@@ -1,0 +1,280 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="bootstrap.min.css">
+  </head>
+  <body>
+    <style type="text/css">
+       .row-padding{
+             padding-top: 100px;
+             padding-bottom: 100px;
+        }
+    </style>
+    <div class="container">
+    <p id = "tabel"> </p>
+
+    <p id = "output"> </p>
+    <button type="button" class="btn btn-primary" onclick="TambahBaris()"> Tambah Baris </button>
+    <button type="button" onclick="Rekap()" class="btn btn-primary"> Rekap </button>
+    </div>
+
+ 
+    <script>
+      var N = 2;
+      /* N menyatakan jumlah baris dalam tabel */
+
+      TampilkanTabel();
+
+     
+      function TampilkanTabel()
+      /* Menampilkan tabel yang terdiri dari nama dan nilai sebanyak N baris */
+      /* I.S. : N >= 0 */
+      /* F.S. : tabel ditampilkan, semua elemen tabel kosong */
+      { var S = "<table class='table'> <tr> <td>Nama</td> <td>Nilai</td> </tr>"; /*....*/
+        /* S adalah kode HTML untuk membuat tabel */
+
+        for (var i = 0; i < N; i++)
+        { S = S + "<tr> <td> <input type='text' id='nama" + i + "'> </td>";
+          S = S + "<td> <input type='number' id='nilai" + i + "'> </td>";
+           S = S + "<td> <button class='btn btn-danger' onCLick='HapusButton(" + i + ")'>Delete</button></td>";
+          S = S + "</tr>";
+          
+        }
+        S = S +  "</table>";
+       
+        document.getElementById("tabel").innerHTML = S;
+        }
+        function HapusButton(i){
+          var nama = []; 
+        var nilai = [];
+        var S = "";
+
+        //baca data
+        AmbilData(nama, nilai);
+
+        //tambahkan baris, buat tabel baru
+        N--;
+        TampilkanTabel();
+
+        //masukkan data ke tabel
+        for(var j = 0; j < i ; j++)
+        {
+         document.getElementById("nama"+j).value = nama[j];
+          document.getElementById("nilai"+j).value = nilai[j];
+        }
+        for (var j = i + 1 ; j <= N; j++) {
+          k = j-1
+          document.getElementById("nama"+(k)).value = nama[j];
+          document.getElementById("nilai"+(k)).value = nilai[j];
+          
+        }
+            
+        }
+        
+
+      function TambahBaris()
+      /* Menambah baris baru dalam tabel */
+      /* I.S. : N >= 0 */
+      /* F.S. : Nilai N bertambah 1. Baris baru ditambahkan pada tabel.
+                Nilai elemen-elemen tabel sebelumnya tidak berubah. */
+      { var nama = []; 
+        var nilai = [];
+        var S = "";
+
+        //baca data
+        AmbilData(nama, nilai);
+
+        //tambahkan baris, buat tabel baru
+        N++;
+        TampilkanTabel();
+
+        //masukkan data ke tabel
+        for(var i = 0; i < N - 1; i++)
+        { document.getElementById("nama"+i).value = nama[i];
+          document.getElementById("nilai"+i).value = nilai[i];
+        }
+      }
+
+      function Rekap()
+      /* Menghitung rata-rata dan nilai maksimum dari kolom nilai pada tabel */
+      /* I.S. : sembarang */
+      /* F.S. : rata-rata dan nilai ditampilkan */
+      { var arrNama = [];
+        var arrNilai = [];
+    
+        AmbilData(arrNama, arrNilai);
+ 
+        var p;
+        p = ArrayValid(arrNilai);
+        if (p)
+        { var mean;
+          var datamaks = [];
+          var datamodus = [];
+          var datamedian = [];
+          mean = MeanArray(arrNilai);
+          datamaks = MaksimumDanNama(arrNama, arrNilai);
+          datamodus = ModusDanNama(arrNama, arrNilai);
+          datamedian = MedianDanNama(arrNama, arrNilai);
+          
+          var S = "Rata-rata = " + mean + "<br>";
+          S = S + "Nilai maksimum = " + datamaks[0];
+          S = S + " oleh " + datamaks[1] + "<br>";
+          S = S + "Modus = " + datamodus[0];
+          S = S + " oleh " + datamodus[1] + "<br>";
+          S = S + "Median = " + datamedian[0];
+          S = S + " oleh " + datamedian[1] + "<br>";
+          document.getElementById("output").innerHTML = S;
+        } else
+        { document.getElementById("output").innerHTML = "Ada input yang kosong!";
+        }
+      }  
+
+      function AmbilData(nama, nilai)
+      /* Mengambil data dari tabel ke array nama dan nilai */
+      /* I.S.: N >= 0 */
+      /* F.S.: Data di kolom nama disimpan ke array nama.
+               Data di kolom nilai disimpan ke array nilai */
+      {
+        for(var i = 0; i < N; i++)
+        { nama[i] = document.getElementById("nama"+i).value;
+          nilai[i] = document.getElementById("nilai"+i).value;
+        }
+      }
+
+      function ArrayValid(arr)
+      /* Memeriksa apakah suatu array arr valid, 
+         dalam arti tidak ada elemen yang bernilai kosong */
+      /* Input: arr tidak kosong */
+      /* Output : true bila semua elemen arr terisi 
+                  false bila sebaliknya */
+      {
+        var valid = true;
+        var i = 0;
+        while (valid && i < arr.length)
+        { if (arr[i] == "")
+          { valid = false}
+          else
+          { i++}
+        } //!valid || i >= arr.length
+        return valid;
+      }      
+
+      function MeanArray(arr)
+      /* Menghitung rata-rata elemen dalam array arr */
+      /* Input : arr tidak kosong dan "valid" */
+      /* Output : rata-rata nilai dalam array */
+      { var sum = 0;
+        for (var i = 0; i < arr.length; i++)
+        { //tambahkan sum
+          sum = +sum + +arr[i];
+        }
+        var mean = sum / N;
+        return mean;
+      }
+
+      function MaksimumDanNama(nama, nilai)
+      /* Mencari nilai maksimum arr nilai 
+          dan orang yang mendapatkan nilai tersebut */
+      /* Input : nama dan nilai tidak kosong
+                 array nama "valid"
+                 jumlah elemen nama dan nilai sama */
+      /* Output : sebuah array berukuran 2 elemen 
+                  indeks 0 menyatakan nilai maksimum
+                  indeks 1 menyatakan orang yang mendapatkan nilai tersebut */
+      { var datamax = [];
+        datamax[0] = +nilai[0];
+        datamax[1] = nama[0];
+        for (var i = 1; i < nilai.length; i++)
+        { 
+          //update maks
+          if (+nilai[i] > +datamax[0])
+          { datamax[0] = nilai[i];
+            datamax[1] = nama[i];
+          }
+        }
+        return datamax;
+      }
+
+      function ModusDanNama(nama, nilai)
+      /* Mencari nilai modus arr nilai 
+          dan orang-orang yang mendapatkan nilai tersebut */
+      /* Input : nama dan nilai tidak kosong
+                 array nama "valid"
+                 jumlah elemen nama dan nilai sama */
+      /* Output : sebuah array berukuran 2 elemen 
+                  indeks 0 menyatakan modus
+                  indeks 1 menyatakan orang-orang yang mendapatkan nilai tersebut*/
+      { var modus = [];
+        var namamodus = [];
+        var idx, idxmaks;
+        var maks = 0;
+        var datamodus = [];
+
+        //masukkan ke array modus
+        for (var i = 0; i < nilai.length; i++)
+        { idx = nilai[i];
+          if (modus[idx] == null)
+          { modus[idx] = 1;
+            namamodus[idx] = nama[i];
+            if (modus[idx] > maks)
+            { maks = modus[idx];
+              idxmaks = idx;
+            }
+          } 
+          else
+          { modus[idx]++;
+            namamodus[idx] += ", "+nama[i];
+            if (modus[idx] > maks)
+            { maks = modus[idx];
+              idxmaks = idx;
+            }
+          }
+        }
+        datamodus[0] = idxmaks;
+        datamodus[1] = namamodus[idxmaks];            
+          
+        return datamodus;                    
+
+      }
+
+      function MedianDanNama(nama, nilai)
+      /* Mencari nilai modus arr nilai 
+          dan orang-orang yang mendapatkan nilai tersebut */
+      /* Input : nama dan nilai tidak kosong
+                 array nama "valid"
+                 jumlah elemen nama dan nilai sama */
+      /* Output : sebuah array berukuran 2 elemen 
+                  indeks 0 menyatakan median
+                  indeks 1 menyatakan orang yang mendapatkan nilai median*/
+      { var tempnama = nama;
+        var tempnilai = nilai;
+        var n = tempnilai.length;
+        var idx;
+        var datamedian = [];
+
+        //sort
+        for (i = 0; i < n-1; i++)       
+        { for (j = 0; j < n-i-1; j++)  
+          { if (+tempnilai[j] > +tempnilai[j+1]) 
+            { [tempnilai[j], tempnilai[j+1]] = [tempnilai[j+1], tempnilai[j]]; 
+              [tempnama[j], tempnama[j+1]] = [tempnama[j+1], tempnama[j]];
+            } 
+          }
+        }
+
+        //ambil nilai tengah
+        if (n % 2 == 1)
+        { idx = (n - 1) / 2;
+          datamedian[0] = tempnilai[idx];
+          datamedian[1] = tempnama[idx];
+        }
+        else
+        { idx = n / 2;
+          datamedian[0] = (+tempnilai[idx - 1] + +tempnilai[idx]) / 2;
+          datamedian[1] = tempnama[idx - 1] + ", " + tempnama[idx];
+        }
+        return datamedian;          
+      }     
+    </script>
+  </body>
+</html>
+

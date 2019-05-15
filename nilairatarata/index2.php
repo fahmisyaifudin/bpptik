@@ -26,20 +26,27 @@ $nilai = isset($_POST['nilai']) ? $_POST['nilai'] : false;
     </tr>
   </thead>
   <tbody>
-      <?php
-      $a = $i;
-     while ($i>0) {
-        echo '
-        
-        <tr> dawkjhha
+    <div id="row1">
+     <tr>
           <td><input type="text" name="nama[]"></td>
           <td><input type="number" name="nilai[]"></td>
-          <td><button class="btn btn-danger" id=row'.$i.'>Delete</button></td>
-        </tr>
-        ';
-          $i=$i-1;
-     }     
-      ?>
+          <td><button class="btn btn-danger" id="hapusrow1">Delete</button></td>
+      </tr>
+    </div>
+    <div>
+      <tr>
+          <td><input type="text" name="nama[]"></td>
+          <td><input type="number" name="nilai[]"></td>
+          <td><button class="btn btn-danger" id=row>Delete</button></td>
+      </tr>
+    </div>
+    <div>
+      <tr>
+          <td><input type="text" name="nama[]"></td>
+          <td><input type="number" name="nilai[]"></td>
+          <td><button class="btn btn-danger" id=row>Delete</button></td>
+      </tr>
+    </div>
     
   </tbody>
 </table>
@@ -105,9 +112,10 @@ function mode($x, $y) {
 </div>
 <script src="assets/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-
-$( "#row1" ).click(function() {
-  $( "#hapusrow1" ).remove();
+$(document).ready(function(){
+  $("#hapusrow1").click(function(){
+    $("#row1").remove();
+  });
 });
 
 </script>
